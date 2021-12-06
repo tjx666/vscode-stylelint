@@ -46,7 +46,10 @@ export function warningToDiagnostic(
 	rules?: { [name: string]: stylelint.Rule },
 ): Diagnostic {
 	const start = Position.create(warning.line - 1, warning.column - 1);
-	const end = Position.create(warning.line - 1, warning.column);
+	const end =
+		typeof warning.endLine === 'number' && typeof warning.endColumn === 'number'
+			? Position.create(warning.endLine - 1, warning.endColumn - 1)
+			: Position.create(warning.line - 1, warning.column);
 
 	const ruleDocUrl =
 		rules?.[warning.rule] && `https://stylelint.io/user-guide/rules/${warning.rule}`;
